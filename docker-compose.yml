@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web:
+    image: "node"
+    environment:
+      - NODE_ENV=dev
+    volumes:
+      - ./:/home/node/app
+    command: "node /home/node/app"
+    links:
+      - api
+  api:
+    image: "node"
+    environment:
+      - NODE_ENV=dev
+    volumes:
+      - ./mockapi:/home/node/app
+    ports:
+      - "3001:3000"
+    command: "node /home/node/app"
+    links:
+      - db
+  db:
+    image: "mongo"
