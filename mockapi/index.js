@@ -1,17 +1,21 @@
-//this will connect to a DB somewhere (probably mongodb referenced by mongo://db),
-//fetch the price, then respond with it in JSON
-
-//requirements: mongo client
-
-var http = require('http');
+var http = require('http'),
+MongoClient = require('mongodb').MongoClient;
 
 http.createServer(function (req, res) {
-    var html = 'this is mockapi';
+    MongoClient.connect('mongodb://db/test', function (err, db) {
 
-    res.writeHead(200, {
-        'Content-Type': 'text/html',
-        'Content-Length': html.length,
-        'Expires': new Date().toUTCString()
+      if (err) {
+
+          console.log(err);
+      }
+
+      var json = db.getCollection('price');
+
+      res.writeHead(200, {
+          'Content-Type': 'text/json',
+          'Content-Length': json.length,
+          'Expires': new Date().toUTCString()
+      });
+      res.end(json);
     });
-    res.end(html);
 }).listen(3000);

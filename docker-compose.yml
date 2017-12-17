@@ -11,6 +11,7 @@ services:
     command: "node /home/node/app"
     links:
       - api
+      - db
   api:
     image: "node"
     environment:
@@ -24,3 +25,5 @@ services:
       - db
   db:
     image: "mongo"
+    ports:
+      - "3002:27017"
